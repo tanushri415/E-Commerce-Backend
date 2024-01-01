@@ -3,6 +3,7 @@ const { getUserById } = require("../db/users");
 const router = express.Router();
 const { JWT_SECRET = "somecrazykeyhere" } = process.env;
 const usersRouter = require("./users");
+const client = require('../db/client');
 
 // GET /api/health
 router.get('/health', async (req, res, next) => {
