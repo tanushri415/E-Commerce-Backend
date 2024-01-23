@@ -34,4 +34,37 @@ async function getAllProducts() {
   }
 }
 
-module.exports = { createProduct, getAllProducts };
+//get all product categories
+async function getProductCategories() {
+  try {
+    const { rows } = await client.query(`
+        SELECT ARRAY(SELECT distinct category FROM products  order by category);`);
+    return rows[0].array;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function getProductsOfSpecificCategory(category) {
+  try {
+    const { rows: products } = await client.query(`
+        SELECT * FROM products WHERE category=$1`, [category]);
+
+    return products;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+const getProductByid = async (productId) => {
+  try {
+    const { rows: [product] } = await client.query(`
+        SELECT * FROM products WHERE id=$1`, [productId]);
+
+    return product;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+module.exports = { createProduct, getAllProducts, getProductCategories, getProductsOfSpecificCategory, getProductByid };

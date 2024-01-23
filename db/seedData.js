@@ -24,15 +24,15 @@ async function createTables() {
             password VARCHAR(255) NOT NULL
         )`);
 
-        // await client.query(`CREATE TABLE products(
-        //     id SERIAL PRIMARY KEY,
-        //     title VARCHAR(255) NOT NULL,
-        //     description VARCHAR(1000) NOT NULL,
-        //     category VARCHAR(255) NOT NULL,
-        //     price decimal NOT NULL,
-        //     image VARCHAR(255) NOT NULL,
-        //     rating decimal NOT NULL
-        //     )`);
+        await client.query(`CREATE TABLE products(
+            id SERIAL PRIMARY KEY,
+            title VARCHAR(255) NOT NULL,
+            description VARCHAR(1000) NOT NULL,
+            category VARCHAR(255) NOT NULL,
+            price decimal NOT NULL,
+            image VARCHAR(255) NOT NULL,
+            rating decimal NOT NULL
+            )`);
     } catch (error) {
         console.error("error creating tables");
         throw error;
@@ -244,7 +244,7 @@ async function rebuildDB() {
         await dropTables();
         await createTables();
         await createInitialUsers();
-        // await createInitialProducts();
+        await createInitialProducts();
     } catch (err) {
         console.error("error during DB rebuild");
         throw err;
