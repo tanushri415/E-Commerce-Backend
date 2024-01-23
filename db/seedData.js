@@ -1,6 +1,7 @@
 const client = require("./client");
 const { createUser, createCart } = require("./users");
 const { createProduct } = require('./products');
+const logger = require('./../logger');
 
 
 // DROP any pre-existing tables
@@ -19,7 +20,7 @@ async function dropTables() {
 //  CREATE our DB tables
 
 async function createTables() {
-    console.log("Building DB tables...");
+    logger.info("Building DB tables...");
     try {
         await client.query(`CREATE TABLE users(
             id SERIAL PRIMARY KEY,
@@ -62,14 +63,14 @@ async function createTables() {
                 NOT VALID
             )`);
     } catch (error) {
-        console.error("error creating tables");
+        logger.error("error creating tables");
         throw error;
     }
 }
 
 // INSERT dummy data into users table 
 async function createInitialUsers() {
-    console.log('Creating users seed data...');
+    logger.info('Creating users seed data...');
     try {
         const fakeUsers = [
             { username: "user1", password: "user1pwd" },
@@ -78,17 +79,17 @@ async function createInitialUsers() {
             { username: "user4", password: "user4pwd" }
         ];
         const users = await Promise.all(fakeUsers.map(createUser));
-        console.log("users Created!");
-        console.log(users);
+        logger.info("users Created!");
+        logger.info(users);
     } catch (error) {
-        console.error("error creating users");
+        logger.error("error creating users");
         throw (error);
     }
 }
 
 // INSERT dummy data into users table 
 async function createInitialProducts() {
-    console.log('Creating products seed data...');
+    logger.info('Creating products seed data...');
     try {
         const fakeProducts = [
             {
@@ -255,16 +256,16 @@ async function createInitialProducts() {
         ];
 
         const products = await Promise.all(fakeProducts.map(createProduct));
-        console.log("products Created!");
-        console.log(products);
+        logger.info("products Created!");
+        logger.info(products);
     } catch (error) {
-        console.error("error creating product");
+        logger.error("error creating product");
         throw (error);
     }
 }
 
 async function createInitialCarts() {
-    console.log('Creating carts seed data...');
+    logger.info('Creating carts seed data...');
     try {
         const maxNumberOfProducts = 20;
         const minNumberOfProducts = 1;
@@ -274,16 +275,15 @@ async function createInitialCarts() {
         const fakeCarts = [
             {
                 userId: 1, products: [{ productId: 1, quantity: 2 }, { productId: 2, quantity: 3 }, { productId: 7, quantity: 2 }, { productId: 15, quantity: 5 }]
-
-            }, 
+            },
             { userId: 2, products: [{ productId: 1, quantity: 2 }, { productId: 2, quantity: 3 },] }
         ];
         const carts = await Promise.all(fakeCarts.map(createCart));
-        console.log("carts Created!");
-        console.log(carts);
-        carts.map((cart) => { console.log("-----cart-------", cart); })
+        logger.info("carts Created!");
+        logger.info(carts);
+        carts.map((cart) => { logger.info("-----cart-------", cart); });
     } catch (error) {
-        console.error("error creating carts");
+        logger.error("error creating carts");
         throw (error);
     }
 }
@@ -300,7 +300,7 @@ async function rebuildDB() {
         await createInitialCarts();
         // await createInitialCartsProducts;
     } catch (err) {
-        console.error("error during DB rebuild");
+        logger.error("error during DB rebuild");
         throw err;
     }
 }

@@ -6,6 +6,7 @@ const usersRouter = require("./users");
 const client = require('../db/client');
 const productsRouter = require("./products");
 const cartsRouter = require("./carts");
+const logger = require('./../logger');
 
 // GET /api/health
 router.get('/health', async (req, res, next) => {
@@ -51,7 +52,7 @@ router.use(async (req, res, next) => {
 
 router.use((req, res, next) => {
     if (req.user) {
-        console.log("User is set:", req.user);
+        logger.info("User is set:", req.user);
     }
     next();
 });

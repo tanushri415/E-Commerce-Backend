@@ -74,7 +74,6 @@ async function createCart({ userId, products }) {
         products.map(async (product) => {
             cartProductQuery += `INSERT INTO cartproducts("cartId", "productId", quantity) VALUES (${cart.id},${product.productId},${product.quantity});`;
         });
-        console.log(cartProductQuery);
         await client.query(cartProductQuery);
         cart.products = products;
         return cart;

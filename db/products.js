@@ -1,5 +1,5 @@
 const client = require('./client');
-
+const logger = require('./../logger');
 // create a product in DB
 async function createProduct({
   title,
@@ -19,7 +19,7 @@ async function createProduct({
     );
     return product;
   } catch (error) {
-    throw error;
+    logger.error(error);
   }
 }
 
@@ -30,7 +30,7 @@ async function getAllProducts() {
         SELECT * FROM products`);
     return products;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 }
 
@@ -41,7 +41,7 @@ async function getProductCategories() {
         SELECT ARRAY(SELECT distinct category FROM products  order by category);`);
     return rows[0].array;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 }
 
@@ -52,7 +52,7 @@ async function getProductsOfSpecificCategory(category) {
 
     return products;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 }
 
@@ -63,7 +63,7 @@ async function getProductById(productId) {
 
     return product;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 };
 

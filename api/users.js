@@ -3,7 +3,7 @@ const router = express.Router();
 const { getUser, getUserByUsername, createUser } = require("../db/users");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET = "somecrazykeyhere" } = process.env;
-
+const logger = require('./../logger');
 // /api/users
 router.get("/", (req, res) => {
     res.send("hello from /api/users");
@@ -33,7 +33,7 @@ router.post("/login", async (req, res, next) => {
             res.send({ user, message: "logged in successfully", token });
         }
     } catch (error) {
-        console.error(error);
+        logger.error(error);
         throw error;
     }
 });
@@ -79,7 +79,7 @@ router.post("/register", async (req, res, next) => {
             }
         }
     } catch (error) {
-        console.error(error);
+        logger.error(error);
         throw error;
     }
 });
