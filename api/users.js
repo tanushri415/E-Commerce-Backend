@@ -60,7 +60,7 @@ router.post("/register", async (req, res, next) => {
             res.status(401);
             next({
                 name: "PasswordLengthError",
-                message: "Password hsould be at least 8 characters long!"
+                message: "Password should be at least 8 characters long!"
             });
         }
         else {
