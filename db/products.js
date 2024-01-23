@@ -56,7 +56,7 @@ async function getProductsOfSpecificCategory(category) {
   }
 }
 
-const getProductByid = async (productId) => {
+async function getProductById(productId) {
   try {
     const { rows: [product] } = await client.query(`
         SELECT * FROM products WHERE id=$1`, [productId]);
@@ -67,4 +67,4 @@ const getProductByid = async (productId) => {
   }
 };
 
-module.exports = { createProduct, getAllProducts, getProductCategories, getProductsOfSpecificCategory, getProductByid };
+module.exports = { createProduct, getAllProducts, getProductCategories, getProductsOfSpecificCategory, getProductById };

@@ -5,6 +5,7 @@ const { JWT_SECRET = "somecrazykeyhere" } = process.env;
 const usersRouter = require("./users");
 const client = require('../db/client');
 const productsRouter = require("./products");
+const cartsRouter = require("./carts");
 
 // GET /api/health
 router.get('/health', async (req, res, next) => {
@@ -57,6 +58,7 @@ router.use((req, res, next) => {
 
 router.use("/users", usersRouter);
 router.use("/products", productsRouter);
+router.use("/carts", cartsRouter);
 
 
 // get request to /api

@@ -1,5 +1,5 @@
 const client = require("./client");
-const { createUser } = require("./users");
+const { createUser, createCart } = require("./users");
 const { createProduct } = require('./products');
 
 
@@ -8,7 +8,10 @@ async function dropTables() {
     console.log("Dropping all tables...");
     try {
         await client.query(`
-       DROP TABLE IF EXISTS users; DROP TABLE IF EXISTS products;`);
+       DROP TABLE IF EXISTS cartproducts;
+       DROP TABLE IF EXISTS carts;
+       DROP TABLE IF EXISTS users;
+       DROP TABLE IF EXISTS products;`);
     } catch (error) {
         throw error;
     }
@@ -32,6 +35,31 @@ async function createTables() {
             price decimal NOT NULL,
             image VARCHAR(255) NOT NULL,
             rating decimal NOT NULL
+            )`);
+
+        await client.query(`CREATE TABLE carts(
+            id SERIAL PRIMARY KEY,
+            "userId" integer NOT NULL,
+            date date NOT NULL DEFAULT CURRENT_DATE,
+            CONSTRAINT "carts_userId_fkey" FOREIGN KEY ("userId")
+                REFERENCES users (id) MATCH SIMPLE
+                ON UPDATE CASCADE
+                ON DELETE CASCADE
+            )`);
+
+        await client.query(`CREATE TABLE cartproducts(
+            "cartId" integer NOT NULL,
+            "productId" integer NOT NULL,
+            quantity integer NOT NULL,
+            CONSTRAINT "cartproducts_cartId_fkey" FOREIGN KEY ("cartId")
+                REFERENCES public.carts (id) MATCH SIMPLE
+                ON UPDATE NO ACTION
+                ON DELETE NO ACTION,
+            CONSTRAINT "cartproducts_productId_fkey" FOREIGN KEY ("productId")
+                REFERENCES public.products (id) MATCH SIMPLE
+                ON UPDATE NO ACTION
+                ON DELETE NO ACTION
+                NOT VALID
             )`);
     } catch (error) {
         console.error("error creating tables");
@@ -235,6 +263,30 @@ async function createInitialProducts() {
     }
 }
 
+async function createInitialCarts() {
+    console.log('Creating carts seed data...');
+    try {
+        const maxNumberOfProducts = 20;
+        const minNumberOfProducts = 1;
+        const minQuantity = 1;
+        const maxQuantity = 20;
+        const randomNumberOfProducts = Math.floor(Math.random() * (maxNumberOfProducts - minNumberOfProducts + 1)) + minNumberOfProducts;
+        const fakeCarts = [
+            {
+                userId: 1, products: [{ productId: 1, quantity: 2 }, { productId: 2, quantity: 3 }, { productId: 7, quantity: 2 }, { productId: 15, quantity: 5 }]
+
+            }, 
+            { userId: 2, products: [{ productId: 1, quantity: 2 }, { productId: 2, quantity: 3 },] }
+        ];
+        const carts = await Promise.all(fakeCarts.map(createCart));
+        console.log("carts Created!");
+        console.log(carts);
+        carts.map((cart) => { console.log("-----cart-------", cart); })
+    } catch (error) {
+        console.error("error creating carts");
+        throw (error);
+    }
+}
 
 // run all seed functions to seed our DB 
 async function rebuildDB() {
@@ -245,6 +297,8 @@ async function rebuildDB() {
         await createTables();
         await createInitialUsers();
         await createInitialProducts();
+        await createInitialCarts();
+        // await createInitialCartsProducts;
     } catch (err) {
         console.error("error during DB rebuild");
         throw err;

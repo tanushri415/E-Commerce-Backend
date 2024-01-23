@@ -63,4 +63,38 @@ async function getUser({ username, password }) {
     }
 }
 
-module.exports = { createUser, getUserByUsername, getUser, getUserById };
+// create a cart in the DB 
+async function createCart({ userId, products }) {
+    console.log(userId, products);
+    try {
+        const { rows: [cart] } = await client.query(`
+        INSERT INTO carts("userId") VALUES ($1) RETURNING id, "userId", date`, [userId]);
+
+        let cartProductQuery = '';
+        products.map(async (product) => {
+            cartProductQuery += `INSERT INTO cartproducts("cartId", "productId", quantity) VALUES (${cart.id},${product.productId},${product.quantity});`;
+        });
+        console.log(cartProductQuery);
+        await client.query(cartProductQuery);
+        cart.products = products;
+        return cart;
+    } catch (error) {
+        throw (error);
+    }
+}
+
+async function getUserCarts(userId) {
+    try {
+        console.log(userId);
+        const { rows } = await client.query(`
+        SELECT * FROM carts WHERE "userId"=$1`, [userId]);
+        if (!rows || !rows.length) {
+            return null;
+        }
+        return rows;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+module.exports = { createUser, getUserByUsername, getUser, getUserById, createCart, getUserCarts };
