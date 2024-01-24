@@ -1,4 +1,5 @@
 const { use } = require("../api");
+const logger = require("../logger");
 const client = require("./client");
 const bcrypt = require("bcrypt");
 const SALT_COUNT = 10;
@@ -84,13 +85,32 @@ async function createCart({ userId, products }) {
 
 async function getUserCarts(userId) {
     try {
-        console.log(userId);
-        const { rows } = await client.query(`
-        SELECT * FROM carts WHERE "userId"=$1`, [userId]);
-        if (!rows || !rows.length) {
-            return null;
+        const { rows: carts } = await client.query(`
+        SELECT * FROM carts
+        WHERE "userId" = $1
+        `, [userId]);
+        if (!carts || !carts.length) {
+            return [];
         }
-        return rows;
+        const { rows: cartproducts } = await client.query(`
+        SELECT A.*
+        FROM cartproducts A
+            INNER JOIN carts B ON A."cartId" = B.id
+        WHERE B."userId" = $1
+        `, [userId]);
+        if (!cartproducts || !cartproducts.length) {
+            return [];
+        }
+        carts.map((cart, index) => {
+            let products = cartproducts.filter((cartproduct) => cartproduct.cartId === cart.id);
+            carts[index].products = products.map((product) => {
+                return {
+                    productId: product.productId,
+                    quantity: product.quantity
+                };
+            });
+        });
+        return carts;
     } catch (error) {
         console.error(error);
     }

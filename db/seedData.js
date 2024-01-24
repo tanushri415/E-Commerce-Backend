@@ -276,6 +276,10 @@ async function createInitialCarts() {
             {
                 userId: 1, products: [{ productId: 1, quantity: 2 }, { productId: 2, quantity: 3 }, { productId: 7, quantity: 2 }, { productId: 15, quantity: 5 }]
             },
+            {
+                userId: 1, products: [{ productId: 1, quantity: 2 }, { productId: 2, quantity: 3 }, { productId: 7, quantity: 2 }, { productId: 15, quantity: 5 }]
+            },
+            { userId: 2, products: [{ productId: 1, quantity: 2 }, { productId: 2, quantity: 3 },] },
             { userId: 2, products: [{ productId: 1, quantity: 2 }, { productId: 2, quantity: 3 },] }
         ];
         const carts = await Promise.all(fakeCarts.map(createCart));
