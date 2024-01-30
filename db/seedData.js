@@ -252,6 +252,38 @@ async function createInitialProducts() {
                 "category": "women's clothing",
                 "image": "https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg",
                 "rating": 3.6,
+            },
+            {
+                "title": "Aloo Parantha(2) with Yogurt",
+                "price": 6.99,
+                "description": " stuffed wheat flatbread with a yummy potatoes and spices spices filling",
+                "category": "Daily Meals",
+                "image": "https://static.wixstatic.com/media/e22900_63c0ca8644ab45b88929bea0adcff20b~mv2.jpg/v1/fit/w_1000%2Ch_1000%2Cal_c%2Cq_80,enc_auto/file.jpg",
+                "rating": 4.6,
+            },
+            {
+                "title": "Chole Bhature(2)/Aloo Puri(4)",
+                "price": 6.99,
+                "description": "Chick peas Curry/Potato tomato curry with fermented fried round bread(Bhatura/Puri)",
+                "category": "Daily Meals",
+                "image": "https://www.sanjeevkapoor.com/UploadFiles/RecipeImages/Chole-Bhature----SK-Khazana.jpg",
+                "rating": 4.3,
+            },
+            {
+                "title": "Rajma/chole and jeera rice",
+                "price": 7.99,
+                "description": "Red Kidney beans curry with White rice lightly flavoured with cumin",
+                "category": "Daily Meals",
+                "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ2R3FJk9RJI9-1Ke3yTsz8g4du-rD--4DSg&usqp=CAU",
+                "rating": 4.5,
+            },
+            {
+                "title": "Veg Biryani with Yogurt",
+                "price": 7.99,
+                "description": "an aromatic rice dish with mixed veggies, saffron, herbs and some Indian spices served with Mint yogurt",
+                "category": "Daily Meals",
+                "image": "https://lh3.ggpht.com/-TlCzQaCKclQ/T__JDM7fhRI/AAAAAAAAJjA/yugJA7NJJKo/DSC_0205_thumb%25255B8%25255D.jpg?imgmax=800",
+                "rating": 4.7,
             }
         ];
 
@@ -280,7 +312,15 @@ async function createInitialCarts() {
                 userId: 1, products: [{ productId: 1, quantity: 2 }, { productId: 2, quantity: 3 }, { productId: 7, quantity: 2 }, { productId: 15, quantity: 5 }]
             },
             { userId: 2, products: [{ productId: 1, quantity: 2 }, { productId: 2, quantity: 3 },] },
-            { userId: 2, products: [{ productId: 1, quantity: 2 }, { productId: 2, quantity: 3 },] }
+            { userId: 2, products: [{ productId: 10, quantity: 2 }, { productId: 2, quantity: 3 },] },
+            {
+                userId: 3, products: [{ productId: 7, quantity: 2 }, { productId: 2, quantity: 3 }, { productId: 7, quantity: 2 }, { productId: 15, quantity: 5 }]
+            },
+            {
+                userId: 4, products: [{ productId: 1, quantity: 2 }, { productId: 2, quantity: 3 }, { productId: 7, quantity: 2 }, { productId: 15, quantity: 5 }]
+            },
+            { userId: 3, products: [{ productId: 3, quantity: 2 }, { productId: 2, quantity: 3 },] },
+            { userId: 4, products: [{ productId: 1, quantity: 2 }, { productId: 2, quantity: 3 },] }
         ];
         const carts = await Promise.all(fakeCarts.map(createCart));
         logger.info("carts Created!");
