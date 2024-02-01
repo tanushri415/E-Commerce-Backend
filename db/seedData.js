@@ -266,7 +266,7 @@ async function createInitialProducts() {
                 "price": 6.99,
                 "description": "Chick peas Curry/Potato tomato curry with fermented fried round bread(Bhatura/Puri)",
                 "category": "Daily Meals",
-                "image": "https://www.sanjeevkapoor.com/UploadFiles/RecipeImages/Chole-Bhature----SK-Khazana.jpg",
+                "image": "https://static.toiimg.com/thumb/53314156.cms?width=1200&height=900",
                 "rating": 4.3,
             },
             {
