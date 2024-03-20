@@ -29,7 +29,7 @@ router.post("/login", async (req, res, next) => {
         }
         else {
             //generate token here
-            const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: "1w" });
+            const token = jwt.sign({ id: user.id, username: user.username, isadmin: user.isadmin }, JWT_SECRET, { expiresIn: "1w" });
             res.send({ user, message: "logged in successfully", token });
         }
     } catch (error) {
@@ -65,7 +65,7 @@ router.post("/register", async (req, res, next) => {
         }
         else {
             //save the recordin the database here
-            const user = await createUser({ username, password });
+            const user = await createUser({ username, password, isadmin: false });
             if (user) {
                 const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: "1w" });
                 res.send({ user: user, message: "User registered successfully", token });

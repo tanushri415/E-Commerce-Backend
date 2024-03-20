@@ -25,7 +25,8 @@ async function createTables() {
         await client.query(`CREATE TABLE users(
             id SERIAL PRIMARY KEY,
             username VARCHAR(255) UNIQUE NOT NULL,
-            password VARCHAR(255) NOT NULL
+            password VARCHAR(255) NOT NULL,
+            isadmin boolean DEFAULT False
         )`);
 
         await client.query(`CREATE TABLE products(
@@ -73,10 +74,11 @@ async function createInitialUsers() {
     logger.info('Creating users seed data...');
     try {
         const fakeUsers = [
-            { username: "user1", password: "user1pwd" },
-            { username: "user2", password: "user2pwd" },
-            { username: "user3", password: "user3pwd" },
-            { username: "user4", password: "user4pwd" }
+            { username: "admin", password: "admin", isadmin: true },
+            { username: "user1", password: "user1pwd", isadmin: false },
+            { username: "user2", password: "user2pwd", isadmin: false },
+            { username: "user3", password: "user3pwd", isadmin: false },
+            { username: "user4", password: "user4pwd", isadmin: false }
         ];
         const users = await Promise.all(fakeUsers.map(createUser));
         logger.info("users Created!");

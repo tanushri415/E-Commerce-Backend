@@ -5,11 +5,11 @@ const bcrypt = require("bcrypt");
 const SALT_COUNT = 10;
 
 // create a user in the DB 
-async function createUser({ username, password }) {
+async function createUser({ username, password, isadmin }) {
     const hashedPwd = await bcrypt.hash(password, SALT_COUNT);
     try {
         const { rows: [user] } = await client.query(`
-        INSERT INTO users(username, password) VALUES ($1, $2) ON CONFLICT (username) DO NOTHING RETURNING id, username`, [username, hashedPwd]);
+        INSERT INTO users(username, password,isadmin) VALUES ($1, $2, $3) ON CONFLICT (username) DO NOTHING RETURNING id, username, isadmin`, [username, hashedPwd, isadmin]);
         delete user.password;
         return user;
     } catch (error) {
